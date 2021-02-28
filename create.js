@@ -1,9 +1,9 @@
-db=db.getSiblingDB('cul_dampolla')
+db=db.getSiblingDB('pizzeria')
 db.createCollection("clientes",{
 	validator:{
 		$jsonSchema:{
 			bsonType: "object",
-			required:["_id","nombre","reg", "direccion"],
+			required:["_id","nombre","apellidos","tfno","direccion"],
 			properties:{
 				_id: {
 					bsonType: "objectId",
@@ -13,13 +13,17 @@ db.createCollection("clientes",{
 					bsonType: "string",
 					description: "Nombre del cliente. Obligatorio"
 				},
-				reg: {
-					bsonType: "date",
-					description: "Fecha de alta como cliente. Obligatorio"
+				apellidos: {
+					bsonType: "string",
+					description: "Apellidos del cliente. Obligatorio"
+				},
+				tfno:{
+					bsonType: "string",
+					description: "Teléfono de contacto del cliente. Obligatorio"
 				},
 				direccion: {
 					bsonType: "object",
-					required:["calle","num","piso","puerta","ciudad","cp","pais"],
+					required:["calle","num","piso","puerta","cp","localidad","provincia"],
 					properties:{
 						calle: {
 							bsonType: "string",
@@ -36,62 +40,46 @@ db.createCollection("clientes",{
 						puerta:{
 							bsonType: "string",
 							description: "Parte obligatoria de la direccion"
-						},
-						ciudad:{
-							bsonType: "string",
-							description: "Parte obligatoria de la direccion"
-						},
+						},						
 						cp:{
 							bsonType: "string",
 							description: "Parte obligatoria de la direccion"
 						},
-						pais:{
+						localidad:{
 							bsonType: "string",
 							description: "Parte obligatoria de la direccion"
 						},
-						tel:{
+						provincia:{
 							bsonType: "string",
-							description: "Campo opcional para el teléfono.Si existe, será string"
-						},
-						fax:{
-							bsonType: "string",
-							description: "Campo opcional para el fax.Si existe, será string"
-						},
-						email:{
-							bsonType: "string",
-							description: "Campo opcional para el e-mail.Si existe, será string"
+							description: "Parte obligatoria de la direccion"
 						}
 					}
-				},
-				"recomendado":{
-					bsonType: "objectId",
-					description: "Opcional, guarda el id del cliente que recomendo nuestra optica a este"
 				}				
 			}
 		}
 	}
 })
-db.createCollection("proveedores",{
+db.createCollection("empleados",{
 	validator:{
 		$jsonSchema:{
 			bsonType: "object",
-			required:["_id","nombre","nif", "direccion","marcas"],
+			required:["nombre","apellidos","tfno","direccion","tienda"],
 			properties:{
-				_id: {
-					bsonType: "objectId",
-					description: "Identificador único del proveedor. Obligatorio"
-				},
 				nombre: {
 					bsonType: "string",
-					description: "Nombre del proveedor. Obligatorio"
+					description: "Nombre del empleado. Obligatorio"
 				},
-				nif: {
+				apellidos: {
 					bsonType: "string",
-					description: "Identificación fiscal del proveedor. Obligatorio"
+					description: "Apellidos del empleado. Obligatorio"
+				},
+				tfno:{
+					bsonType: "string",
+					description: "Teléfono de contacto del empleado. Obligatorio"
 				},
 				direccion: {
 					bsonType: "object",
-					required:["calle","num","piso","puerta","ciudad","cp","pais"],
+					required:["calle","num","piso","puerta","cp","localidad","provincia"],
 					properties:{
 						calle: {
 							bsonType: "string",
@@ -108,100 +96,164 @@ db.createCollection("proveedores",{
 						puerta:{
 							bsonType: "string",
 							description: "Parte obligatoria de la direccion"
-						},
-						ciudad:{
-							bsonType: "string",
-							description: "Parte obligatoria de la direccion"
-						},
+						},						
 						cp:{
 							bsonType: "string",
 							description: "Parte obligatoria de la direccion"
 						},
-						pais:{
+						localidad:{
 							bsonType: "string",
 							description: "Parte obligatoria de la direccion"
 						},
-						tel:{
+						provincia:{
 							bsonType: "string",
-							description: "Campo opcional para el teléfono.Si existe, será string"
-						},
-						fax:{
-							bsonType: "string",
-							description: "Campo opcional para el fax.Si existe, será string"
-						},
-						email:{
-							bsonType: "string",
-							description: "Campo opcional para el e-mail.Si existe, será string"
-						}
-					}
-				},
-				marcas:{
-					bsonType: "array",
-					required: "marca",
-					properties:{
-						marca:{
-							bsonType: "object",
-							required:["_id","nombre"],
-							properties:{
-								_id: {
-									bsonType: "objectId",
-									description: "Identificador único de la marca. Obligatorio"
-								},
-								nombre: {
-									bsonType: "string",
-									description: "Nombre de la marca. Obligatorio"
-								}
-							}
+							description: "Parte obligatoria de la direccion"
 						}
 					}					
-				}							
+				},
+				tienda:{
+					bsonType:"objectId",
+					description:"Referencia a la tienda en la que trabaja"
+				}				
 			}
 		}
 	}
 })
-db.createCollection("gafas",{
-	validator: {
+db.createCollection("tiendas",{
+	validator:{
 		$jsonSchema:{
 			bsonType: "object",
-			required:["grad_izda","grad_dcha","color_izda","color_dcha","montura","color_montura","vendedor","marca","cliente"],
+			required:["_id","matricula","tfno","direccion"],
 			properties:{
-				grad_izda:{
-					bsonType: "string",
-					description: "Graduación lente izda. Obligatorio"
-				},
-				grad_dcha:{
-					bsonType: "string",
-					description: "Graduación lente dcha. Obligatorio"
-				},
-				color_izda:{
-					bsonType: "string",
-					description: "Color lente izda. Obligatorio"
-				},
-				color_dcha:{
-					bsonType: "string",
-					description: "Color lente dcha. Obligatorio"
-				},
-				montura:{
-					bsonType: "string",
-					description: "Tipo de montura. Obligatorio"
-				},
-				color_montura:{
-					bsonType: "string",
-					description: "Color montura. Obligatorio"
-				},
-				vendedor:{
-					bsonType: "string",
-					description: "Código externo del vendedor que realiza la venta (nuestra BBDD no almacena vendedores). Obligatorio"
-				},
-				marca:{
+				_id: {
 					bsonType: "objectId",
-					description: "Referencia a la id de la marca de estas gafas. Obligatorio"
+					description: "Identificador único de la tienda. Obligatorio"
+				},
+				matricula: {
+					bsonType: "string",
+					description: "Identificador externo de la tienda. Obligatorio"
+				},
+				tfno:{
+					bsonType: "string",
+					description: "Teléfono de contacto del local. Obligatorio"
+				},
+				direccion: {
+					bsonType: "object",
+					required:["calle","num","piso","puerta","cp","localidad","provincia"],
+					properties:{
+						calle: {
+							bsonType: "string",
+							description: "Parte obligatoria de la direccion"
+						},
+						num: {
+							bsonType: "double",
+							description: "Parte obligatoria de la direccion"
+						},
+						piso: {
+							bsonType: "double",
+							description: "Parte obligatoria de la direccion"
+						},
+						puerta:{
+							bsonType: "string",
+							description: "Parte obligatoria de la direccion"
+						},						
+						cp:{
+							bsonType: "string",
+							description: "Parte obligatoria de la direccion"
+						},
+						localidad:{
+							bsonType: "string",
+							description: "Parte obligatoria de la direccion"
+						},
+						provincia:{
+							bsonType: "string",
+							description: "Parte obligatoria de la direccion"
+						}
+					},					
+				}				
+			}
+		}
+	}
+})
+db.createCollection("productos",{
+	validator:{
+		$jsonSchema:{
+			bsonType: "object",
+			required:["_id","tipo","nombre","desc","img","precio"],
+			properties:{
+				_id:{
+					bsonType:"objectId",
+					description: "Identificador del producto. Obligatorio"
+				},
+				tipo:{
+					bsonType:"string",
+					description:"Tipo de producto. Obligatorio"
+				},
+				nombre:{
+					bsonType:"string",
+					description:"Nombre del producto. Obligatorio"
+				},
+				desc:{
+					bsonType:"string",
+					description:"descripción del producto. Obligatorio"
+				},
+				img:{
+					bsonType:"string",
+					description: "URL de la imagen del producto. Obligatorio"
+				},
+				precio:{
+					bsonType:"double",
+					description:"PVP del producto. Obligatorio"
+				},
+				categoria:{
+					bsonType:"string",
+					description:"Nombre de la categoria del producto (aplicable en las pizzas y por temporadas). Si existe, debe ser de tipo string"
+				}
+			}
+		}
+	}
+})
+db.createCollection("pedidos",{
+	validator:{
+		$jsonSchema:{
+			bsonType:"object",
+			required:["fecha","tienda","cliente","tipo","total","lista_prod"],
+			properties:{
+				fecha:{
+					bsonType:"date",
+					description:"Fecha de la realización del pedido. Obligatorio"
+				},
+				tienda:{
+					bsonType:"objectId",
+					description:"Referencia a la tienda que sirve el pedido. Obligatorio"
 				},
 				cliente:{
-					bsonType: "objectId",
-					description: "Referencia al id del cliente que las compra. Obligatorio"
+					bsonType:"objectId",
+					description:"Referencia al cliente que realiza el pedido. Obligatorio"
+				},
+				tipo:{
+					bsonType:"string",
+					description:"Tipo de pedido. (Para llevar o para recoger en local). Obligatorio"
+				},
+				total:{
+					bsonType:"double",
+					description:"Precio total del pedido. Obligatorio"
+				},
+				lista_prod:{
+					bsonType:"array",
+					required:["id_prod","cantidad"],
+					properties:{
+						id_prod:{
+							bsonType:"objectId",
+							description:"Referencia al producto que se pide. Obligatorio"
+						},
+						cantidad:{
+							bsonType:"double",
+							description:"Num. de unidades que se piden del producto"
+						}
+					}
 				}
-			}			
+			}
 		}
 	}
 })
