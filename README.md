@@ -1,1 +1,3 @@
 # mongodb-estructura
+
+Primer ejercicio
